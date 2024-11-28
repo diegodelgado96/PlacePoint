@@ -17,8 +17,8 @@ const Locations: React.FC = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/locations', {
-          headers: { api_key: 'your-secure-api-key' },
+        const response = await axios.get(process.env.REACT_APP_API_URL+'/api/locations', {
+          headers: { api_key: process.env.API_KEY },
         });
 
         setLocations(response.data.data);
