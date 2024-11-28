@@ -9,9 +9,9 @@ class ApiKeyMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        $apiKey = $request->header('api-key');  
+        $apiKey = $request->header('api-key');
 
-        if (!$apiKey) {
+        if (! $apiKey) {
             return response()->json(['error' => 'API Key es requerida'], 401);
         }
 

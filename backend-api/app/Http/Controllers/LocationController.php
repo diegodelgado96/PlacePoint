@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class LocationController extends Controller
@@ -16,8 +15,8 @@ class LocationController extends Controller
     {
         // Ruta al archivo JSON en el directorio 'storage/app'
         $path = storage_path('app/locations.json');
-        
-        if (!file_exists($path)) {
+
+        if (! file_exists($path)) {
             return response()->json(['error' => 'Archivo no encontrado'], 404);
         }
 
