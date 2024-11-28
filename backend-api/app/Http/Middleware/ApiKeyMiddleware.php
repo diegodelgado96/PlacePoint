@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 
 class ApiKeyMiddleware
 {
-	public function handle(Request $request, Closure $next)
-	{
-		$apiKey = $request->header('api_key');
+    public function handle(Request $request, Closure $next)
+    {
+        $apiKey = $request->header('api-key');  
 
-		if (!$apiKey || $apiKey !== env('API_KEY')) {
-			return response()->json(['error' => 'Unauthorized'], 401);
-		}
+        if (!$apiKey) {
+            return response()->json(['error' => 'API Key es requerida'], 401);
+        }
 
-		return $next($request);
-}
+        if ($apiKey !== env('APP_KEY')) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $next($request);
+    }
 }
