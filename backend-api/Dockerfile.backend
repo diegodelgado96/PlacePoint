@@ -1,0 +1,39 @@
+# Imagen base de PHP con soporte para Laravel
+FROM php:8.2-fpm
+
+# Instalar dependencias y herramientas necesarias
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    git \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
+
+# Configurar el directorio de trabajo
+WORKDIR /var/www
+
+# Copiar el archivo de composición del proyecto
+COPY ./backend-api /var/www
+
+# Instalar Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Instalar dependencias de Laravel
+RUN composer install --no-interaction --prefer-dist
+
+# Ejecutar los scripts definidos en composer.json
+RUN composer format /var/www && \
+    composer psalm /var/www \
+    composer analyse /var/www 
+
+# En Dockerfile, agregar configuración de PHP
+RUN echo "max_execution_time = 300" > /usr/local/etc/php/conf.d/50-time-limit.ini
+RUN echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/50-memory-limit.ini
+
+# Exponer el puerto
+EXPOSE 9000
+
+# Iniciar el servidor PHP-FPM
+CMD ["php-fpm"]
