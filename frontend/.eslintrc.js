@@ -7,6 +7,11 @@ module.exports = {
 			jsx: true,
 		},
 	},
+	env: {
+		browser: true,   // Soporte para entornos de navegador
+		es2020: true,    // Soporte para ES2020
+		node: true       // Soporte para variables globales de Node.js
+	},
 	extends: [
 		'eslint:recommended',
 		'plugin:react/recommended',

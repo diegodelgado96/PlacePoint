@@ -7,24 +7,25 @@ services:
       dockerfile: ./backend-api/Dockerfile.backend
     container_name: laravel-backend
     ports:
-      - "9000:9000"
+      - "8000:8000"
     volumes:
       - ./backend-api:/var/www
     networks:
       - app-network
 
-  #frontend:
-  #  build:
-  #    context: .
-  #    dockerfile: Dockerfile.frontend
-  #  container_name: react-frontend
-  #  ports:
-  #    - "3000:3000"
-  #  volumes:
-  #    - ./frontend:/app
-  #  networks:
-  #    - app-network
-  
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.frontend
+    container_name: react-frontend
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
